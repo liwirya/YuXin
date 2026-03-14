@@ -1,0 +1,86 @@
+export default {
+	name: "tiktok",
+	description: "Downloader TikTok.",
+	command: ["tt", "tiktok"],
+	usage: "$prefix$command https://vt.tiktok.com/ZSkSAodxb/",
+	permissions: "all",
+	hidden: false,
+	failed: "Failed to execute %command: %error",
+	wait: null,
+	category: "downloader",
+	cooldown: 5,
+	limit: true,
+	react: true,
+	botAdmin: false,
+	group: false,
+	private: false,
+	owner: false,
+
+	execute: async (m, { api }) => {
+		const input =
+			m.text && m.text.trim() !== ""
+				? m.text
+				: m.quoted && m.quoted.url
+					? m.quoted.url
+					: null;
+
+		if (!input) {
+			return m.reply("Input URL TikTok.");
+		}
+
+		const {
+			data: { result, status, message },
+		} = await api.Gratis.get("/downloader/tiktok", { url: input });
+
+		if (!status) {
+			return m.reply(message);
+		}
+
+		const { author, aweme_id, region, desc, duration, download, info } =
+			result;
+
+		let msg = "*🕺 TIKTOK DOWNLOADER*\n\n";
+		msg += `*👤 User*: ${author.nickname} (@${author.unique_id})\n`;
+		msg += `*🆔 ID Video*: ${aweme_id}\n`;
+		msg += `*🌍 Region*: ${region}\n`;
+		msg += `*📝 Caption*: ${desc || "-"}\n`;
+		msg += `*⏱️ Duration*: ${duration}s\n`;
+		msg += `*🎶 Music*: ${download.music_info?.title || "-"} - ${download.music_info?.author || "-"}\n`;
+		msg += `*👁️ Views*: ${info?.play_count || 0}\n`;
+		msg += `*👍 Like*: ${info?.digg_count || 0} | 💬 ${info?.comment_count || 0} | 🔁 Share: ${result.info?.share_count || 0}\n`;
+		msg += `*🗓️ Upload*: ${info?.create_time ? new Date(info.create_time * 1000).toLocaleString("id-ID") : "-"}\n`;
+
+		if (download.images?.length > 0) {
+			for (const img of download.images) {
+				await m.reply({ image: { url: img } });
+			}
+		}
+
+		await m.reply({
+			video: { url: download.original },
+			caption: msg.trim(),
+			annotations: [
+				{
+					embeddedContent: {
+						embeddedMusic: {
+							musicContentMediaId: "12",
+							songId: "11",
+							author: download.music_info?.author || "-",
+							title: download.music_info?.title || "-",
+							artistAttribution: input,
+						},
+					},
+					embeddedAction: true,
+				},
+			],
+		});
+		// await m.reply({
+		// 	video: { url: download.original },
+		// 	caption: msg.trim(),
+		// });
+		await m.reply({
+			audio: { url: download.music },
+			mimetype: "audio/mpeg",
+		});
+	},
+};

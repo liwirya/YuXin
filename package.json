@@ -1,0 +1,64 @@
+{
+  "name": "yuxin",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env src/main.js",
+    "dev": "node --watch --env-file=.env src/main.js",
+    "prettier": "npx prettier . --write",
+    "pm2": "pm2 start ecosystem.config.cjs",
+    "lint": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liwirya/YuXin.git"
+  },
+  "author": "Huang Li Wen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/liwirya/YuXin/issues"
+  },
+  "homepage": "https://github.com/liwirya/YuXin#readme",
+  "description": "WhatsApp Bot using Baileys, MongoDB & MySQL.",
+  "keywords": [
+    "whatsapp-bot",
+    "bot-whatsapp",
+    "baileys"
+  ],
+  "dependencies": {
+    "axios": "^1.13.5",
+    "baileys": "^7.0.0-rc.9",
+    "file-type": "^21.3.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "jimp": "^1.6.0",
+    "mongodb": "^7.1.0",
+    "mysql-baileys": "github:bobslavtriev/mysql-baileys",
+    "node-webpmux": "^3.2.1",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.28.4",
+    "@eslint/js": "^9.36.0",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^17.3.0",
+    "prettier": "^3.8.1"
+  },
+  "imports": {
+    "#/*": "./*",
+    "#auth/*": "./src/auth/*.js",
+    "#core/*": "./src/core/*.js",
+    "#lib/*": "./src/lib/*.js",
+    "#config/*": "./src/config/*.js",
+    "#utils/*": "./src/utils/*.js",
+    "#plugins/*": "./src/plugins/*.js"
+  }
+}
