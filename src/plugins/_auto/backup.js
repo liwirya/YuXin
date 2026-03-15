@@ -13,7 +13,7 @@ export default {
 	execute: () => {},
 	ephemeralExpiration: 86400, // set ephemeral
 	hidden: true,
-	owner: true,
+	owner: false,
 	periodic: {
 		enabled: false, // true to enable automatic backup, u can setting on command
 		type: "interval", // Required: so it's only called by interval scheduler, not message handler. Options: "interval" or "message"

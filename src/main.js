@@ -1,7 +1,7 @@
 import Connect from "#core/connect";
 import { Colors, colorize } from "#lib/colors";
 import print from "#lib/print";
-import { startWebhookServer } from "#lib/callback/webhook.js";
+import { startWebhookServer } from "#lib/callback/webhook";
 
 function centerText(text, width = 55) {
 	const pad = Math.max(0, Math.floor((width - text.length) / 2));
