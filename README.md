@@ -1,110 +1,138 @@
-# 🤖 YuXin WhatsApp Bot
+# 📚 Dokumentasi Proyek: YuXin WhatsApp Bot
 
-YuXin adalah implementasi bot WhatsApp modular berbasis Node.js yang dirancang dengan arsitektur *plugin-based* untuk skalabilitas dan pemeliharaan tingkat lanjut. Proyek ini tidak hanya sekadar skrip bot; ia mengintegrasikan berbagai kapabilitas, mulai dari kecerdasan buatan, pemrosesan media tingkat lanjut, integrasi PPOB, hingga manajemen sistem secara dinamis.
+**YuXin** adalah bot WhatsApp cerdas berbasis Node.js yang dibangun menggunakan library **Baileys**. Bot ini dirancang dengan arsitektur modular (sistem plugin) sehingga sangat mudah untuk dikembangkan, dipelihara, dan diskalakan. Bot ini mendukung integrasi database ganda (MongoDB/MySQL & Lokal) serta dilengkapi dengan berbagai fitur seperti AI, Downloader, Manajemen Grup, hingga integrasi PPOB (Digiflazz).
 
-## ⚡ Fitur Utama
+---
 
-Sistem ini beroperasi dengan memuat plugin secara dinamis, menawarkan kapabilitas berikut:
-- **🧠 Integrasi AI**: Interaksi data dan teks cerdas menggunakan modul GPT-based.
-- **📥 Universal Downloader**: Ekstraksi media dari platform mayor (Facebook, Instagram, Pinterest, Spotify, Threads, TikTok, Twitter/X, YouTube).
-- **🔄 Media Converter & Manipulation**: Transcoding dan manipulasi presisi tinggi (Sticker maker, Video/Audio/Image converter, Brat generator, filter efek).
-- **💳 Integrasi PPOB (Digiflazz)**: Pengecekan harga dan saldo secara real-time langsung melalui protokol API Digiflazz.
-- **🛡️ Group Management Protocol**: Otomatisasi moderasi grup (Kick, Promote, Demote, Everyone, Set P/P).
-- **🛠️ Owner & System Utilities**: Eksekusi kode dinamis (Eval/Exec), manajemen sesi (Ban/Clear Chat), serta manipulasi file *on-the-fly*.
+## 🏗️ 1. Arsitektur & Struktur Direktori
 
-## 💻 Teknologi yang Digunakan
-
-Arsitektur YuXin dibangun di atas fondasi teknologi modern dan efisien:
-- **[Node.js](https://nodejs.org/)**: Runtime environment utama.
-- **[ES Modules (ESM)](https://nodejs.org/api/esm.html)**: Standar ekspor/impor ECMAScript untuk efisiensi modul.
-- **Database System**: Mendukung skema penyimpanan ganda (Local JSON & MongoDB untuk state authentication).
-- **PM2**: Proses manajer untuk eksekusi latar belakang dan *auto-restart* (`ecosystem.config.cjs`).
-- **ESLint & Prettier**: Penegakan standar kode yang ketat untuk stabilitas *codebase*.
-
-## ⚙️ Prasyarat Instalasi
-
-Sebelum menginisialisasi sistem ini, pastikan infrastruktur lokal atau server telah memenuhi persyaratan absolut berikut:
-- **Node.js**: Versi `18.x` atau lebih baru (wajib untuk dukungan ESM penuh).
-- **Git**: Untuk manajemen repositori.
-- **FFmpeg & ImageMagick**: Diperlukan untuk *core rendering* dan konversi media biner (stiker, transcode video/audio).
-- **MongoDB URI** *(Opsional)*: Jika arsitektur mengandalkan cluster MongoDB untuk autentikasi yang lebih handal dari *file-based state*.
-
-## 📂 Susunan Project
-
-Hierarki direktori disusun untuk pemisahan *concern* (*separation of concerns*) yang jelas guna efisiensi operasional dan pengembangan:
+Proyek ini menggunakan struktur folder yang memisahkan antara konfigurasi, logika inti, utilitas, dan fitur (plugin). Hal ini membuat kode menjadi sangat rapi.
 
 ```text
-YuXin/
-├── .env.example             # Template variabel lingkungan (API Keys, Config)
-├── ecosystem.config.cjs     # Konfigurasi PM2 Process Manager
-├── eslint.config.mjs        # Aturan linter statis
-├── package.json             # Dependensi dan metadata proyek
-└── src/                     # Source Code Utama
-    ├── config/              # Parameter konfigurasi statis (stiker, general)
-    ├── core/                # Inti protokol koneksi dan sistem parsing pesan
-    ├── database/            # Penyimpanan state lokal (JSON)
-    ├── lib/                 # Pustaka utilitas (Auth, Scrapers, DB Models, Yt-dlp)
-    ├── plugins/             # Modul fungsional yang dimuat dinamis
-    │   ├── _auto/           # Plugin otomatisasi *background task*
-    │   ├── ai/              # Integrasi sistem kecerdasan buatan
-    │   ├── convert/         # Manipulasi dan konversi format file
-    │   ├── digi/            # Layanan utilitas transaksi PPOB
-    │   ├── downloader/      # Ekstraktor sumber daya dan media eksternal
-    │   ├── group/           # Perintah moderasi dan operasi grup
-    │   ├── info/            # Metrik dan statistik bot
-    │   ├── misc/            # Plugin operasional tambahan
-    │   ├── owner/           # Utilitas absolut admin/developer
-    │   └── tools/           # Alat bantu fungsional umum (Lirik, OCR, API Fetcher)
-    ├── utils/               # Modul helper eksternal (Konverter, Digiflazz handler)
-    └── main.js              # Titik masuk (Entry point) inisialisasi aplikasi
+yuxin-whatsapp-bot/
+├── .env.example          # Contoh file konfigurasi environment
+├── ecosystem.config.cjs  # Konfigurasi untuk PM2 (Deployment)
+├── package.json          # Informasi dependensi project
+└── src/                  # Direktori utama source code
+    ├── config/           # Konfigurasi statis bot (Nama, Owner, Setting Stiker)
+    ├── core/             # Logika inti (Koneksi WA & Pemrosesan Pesan)
+    ├── database/         # Penyimpanan database lokal statis (JSON)
+    ├── lib/              # Pustaka internal (Database, Scraper, Skema, Uploader)
+    ├── plugins/          # Kumpulan fitur/perintah bot yang dibagi per kategori
+    ├── utils/            # Fungsi utilitas (API request, Converter, Digiflazz)
+    └── main.js           # Entry point (Titik awal jalannya aplikasi)
 ```
 
-## 🚀 Instalasi & Contoh Penggunaan
+---
 
-Ikuti alur eksekusi ini dengan presisi untuk memastikan sistem berjalan tanpa distorsi.
+## ⚙️ 2. Alur Logika (Core Logic)
 
-1. **Kloning Repositori**
-   Ambil *source code* secara langsung menggunakan git.
-   ```bash
-   git clone https://github.com/liwirya/yuxin-whatsapp-bot.git
-   cd yuxin-whatsapp-bot
-   ```
+Bagaimana bot menerima dan merespons pesan? Berikut adalah alur kerja utamanya:
 
-2. **Instalasi Dependensi**
-   Populasikan modul-modul yang dibutuhkan oleh *package.json*.
+1. **Inisialisasi (`src/main.js`)**: 
+   Saat aplikasi dijalankan, `main.js` akan memuat konfigurasi, menghubungkan database, dan memanggil fungsi koneksi dari `core/connect.js`.
+2. **Koneksi WhatsApp (`src/core/connect.js`)**:
+   - Modul ini menggunakan *Baileys* untuk menghubungkan bot ke server WhatsApp.
+   - Mengelola *state* autentikasi (menyimpan sesi login agar tidak perlu scan QR/Pairing terus-menerus).
+   - Mendengarkan event (kejadian) dari WhatsApp, seperti pesan masuk (`messages.upsert`).
+3. **Pemrosesan Pesan (`src/core/message.js`)**:
+   - Setiap pesan baru akan dilempar ke `message.js`.
+   - Modul ini bertugas mengekstrak teks pesan, mengecek apakah pesan tersebut memiliki **Prefix** (awalan perintah seperti `!`, `.`, atau `/`).
+   - Melakukan validasi dasar: *Apakah pengirim adalah owner? Apakah pengirim sedang di-ban? Apakah pesan dikirim di dalam grup?*
+   - Jika valid, sistem akan mencari *plugin* yang cocok dengan perintah tersebut dan mengeksekusinya.
+
+---
+
+## 🧩 3. Modul dan Fitur (Plugins)
+
+Fitur-fitur bot diletakkan di dalam folder `src/plugins/` dan dikelompokkan berdasarkan fungsinya agar terorganisir dengan baik.
+
+### 🤖 A. Artificial Intelligence (`/ai`)
+Menggunakan API pihak ketiga untuk memberikan respons cerdas.
+* **gpt.js**: Chatbot berbasis AI untuk menjawab pertanyaan umum.
+
+### 🎬 B. Anime (`/anime`)
+Fitur untuk para pecinta anime (terintegrasi dengan scraper Anichin).
+* **anichinc.js / anichinep.js / anichingo.js / anichins.js**: Modul untuk mencari judul anime, mengecek episode terbaru, dan mendapatkan link terkait.
+
+### 🔄 C. Converter (`/convert`)
+Modul untuk memanipulasi file media.
+* **sticker.js**: Mengubah gambar/video singkat menjadi stiker WhatsApp.
+* **toaudio.js / toimage.js / tovideo.js**: Mengonversi format media satu sama lain (misal: stiker bergerak menjadi video).
+* **brat.js**: Membuat stiker/gambar bergaya tren "Brat".
+* **effects.js**: Memberikan filter/efek pada gambar.
+
+### 💳 D. Digital / PPOB (`/digi`)
+Integrasi dengan layanan PPOB **Digiflazz** untuk transaksi digital.
+* **harga.js**: Mengecek daftar harga produk digital (pulsa, kuota, game).
+* **saldo.js**: Mengecek sisa saldo Digiflazz bot.
+
+### 📥 E. Downloader (`/downloader`)
+Mengunduh media dari berbagai platform sosial media.
+* Mendukung platform populer: **TikTok, Instagram, Facebook, Twitter (X), Spotify, Pinterest, Threads, dan Mediafire**.
+* Logika downloader memanfaatkan scraper di `src/lib/scrapers/` atau menggunakan pustaka `yt-dlp`.
+
+### 👥 F. Group Management (`/group`)
+Otomatisasi dan pengelolaan grup WhatsApp (Hanya bisa digunakan jika bot adalah Admin).
+* **add.js / kick.js**: Menambah atau mengeluarkan member.
+* **promote.js / demote.js**: Menaikkan/menurunkan jabatan admin.
+* **everyone.js**: Tagging (menyebut) seluruh anggota grup (Tag All).
+* **setppgc.js**: Mengubah foto profil grup.
+
+### 👑 G. Owner / Developer (`/owner`)
+Perintah khusus yang *hanya* bisa diakses oleh Wira (Developer/Owner).
+* **eval.js / exec.js**: Menjalankan kode JavaScript atau perintah Terminal/Shell langsung dari WhatsApp (Sangat berguna untuk *debugging*).
+* **ban.js**: Memblokir pengguna agar tidak bisa menggunakan bot.
+* **clearchat.js**: Membersihkan riwayat obrolan bot.
+* **setpp.js**: Mengganti foto profil bot.
+* **settings.js**: Mengubah pengaturan bot secara dinamis.
+
+### 🛠️ H. Tools & Misc (`/tools` & `/misc`)
+Kumpulan alat bantu tambahan.
+* **lyrics.js**: Mencari lirik lagu.
+* **whatmusic.js**: Mengidentifikasi lagu dari audio (seperti Shazam).
+* **screenshot.js**: Mengambil screenshot dari sebuah website.
+* **delmsg.js / rvo.js**: Menghapus pesan atau membaca pesan "View Once" (Sekali Lihat).
+
+---
+
+## 🗄️ 4. Skema Database & Penyimpanan
+
+Proyek ini menggunakan fleksibilitas database melalui folder `src/lib/database/`.
+
+1.  **Driver Database**:
+    * Terdapat dukungan untuk **MongoDB** (melalui Mongoose) dan **Local JSON** sebagai cadangan/alternatif jika database awan tidak tersedia.
+2.  **Model Skema (`src/lib/database/models/`)**:
+    * **User**: Menyimpan data pengguna (XP, limit harian, status premium, status ban).
+    * **Group**: Menyimpan pengaturan spesifik per grup (apakah mode *nsfw* aktif, apakah fitur *antilink* nyala).
+    * **Settings**: Menyimpan konfigurasi global bot (status publik/self).
+    * **Session**: Mengamankan data sesi koneksi Baileys ke dalam database agar tidak hilang saat server di-*restart*.
+
+---
+
+## 🚀 5. Panduan Konfigurasi & Menjalankan Bot
+
+Untuk mengatur proyek ini, pengembang atau kontributor dapat mengikuti langkah berikut:
+
+### Konfigurasi Awal
+1. Salin file konfigurasi *environment*:
+   `cp .env.example .env`
+2. Buka `.env` dan isi variabel yang dibutuhkan:
+   * URL MongoDB/MySQL.
+   * API Key (seperti Digiflazz, API Scraper, dll).
+3. Buka `src/config/index.js` untuk mengatur:
+   * Nama Bot (YuXin).
+   * Nomor Pemilik (Owner Number).
+   * Prefix default.
+
+### Instalasi & Menjalankan
+1. Pastikan **Node.js** terinstal.
+2. Instal dependensi menggunakan npm atau yarn:
    ```bash
    npm install
    ```
-
-3. **Konfigurasi Lingkungan**
-   Konfigurasikan kunci rahasia (*secret keys*) dan parameter esensial sistem.
+3. Jalankan bot:
    ```bash
-   cp .env.example .env
+   npm start
    ```
-   *(Modifikasi isi dari `.env` dengan kredensial API, nomor developer, dan pengaturan sistem lainnya yang sesuai).*
-
-4. **Inisialisasi Sistem**
-   - **Mode Development/Manual:**
-     ```bash
-     npm start
-     ```
-   - **Mode Production (Optimasi via PM2):**
-     ```bash
-     pm2 start ecosystem.config.cjs
-     ```
-
-**Eksekusi Perintah (Contoh Penggunaan):**
-Setelah otentikasi sesi berhasil dijalankan dengan WhatsApp (via *pairing code* atau metode login yang disediakan), interaksi sistem dapat dipanggil dengan *prefix* yang dikonfigurasi.
-- Mengakses dokumentasi / menu dasar: `!help` atau `.menu`
-- Menginisiasi unduhan media: `!tiktok <url_video>` atau `!ig <url_post>`
-- Interaksi intelijen buatan: `!gpt Jelaskan struktur data secara ringkas`
-- Konversi media ke stiker: Kirim/Reply gambar dengan *caption* `!sticker`
-
-## 🤝 Kontribusi
-
-Arsitektur sistem ini masih terbuka untuk optimasi lanjutan. Jika Anda mampu mengembangkan fungsi baru atau merekayasa ulang algoritma yang tidak efisien:
-1. Lakukan *Fork* pada repositori ini.
-2. Buat *branch* fitur Anda (`git checkout -b feature/OptimasiKrusial`).
-3. Terapkan perubahan dan *commit* dengan deskripsi teknis yang jelas (`git commit -m 'feat: Integrasi metode caching presisi tinggi'`).
-4. Unggah ke branch Anda (`git push origin feature/OptimasiKrusial`).
-5. Buat dan ajukan *Pull Request* untuk evaluasi logis.
+   *(Atau gunakan PM2 dengan `ecosystem.config.cjs` untuk berjalan di latar belakang (background) selama 24/7).*
