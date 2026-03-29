@@ -1,5 +1,5 @@
 import axios from "axios";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 
 const COOKIES = [
 	"_ga=GA1.1.1131220858.1774759578",
