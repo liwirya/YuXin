@@ -32,6 +32,7 @@
   "dependencies": {
     "@cacheable/node-cache": "latest",
     "axios": "^1.13.5",
+    "axios-cookiejar-support": "latest",
     "cheerio": "latest",
     "baileys": "^7.0.0-rc.9",
     "crypto": "latest",
@@ -46,6 +47,7 @@
     "path": "latest",
     "qrcode": "^1.5.4",
     "qs": "latest",
+    "tough-cookie": "latest",
     "url": "latest"
   },
   "devDependencies": {
