@@ -3,7 +3,7 @@ import snaptik from "#lib/scrapers/snaptik";
 export default {
 	name: "Tiktok",
 	description: "Downloader TikTok",
-	command: ["tiktok3", "tt3", "snaptik"],
+	command: ["tt3", "snaptik"],
 	usage: "$prefix$command https://vt.tiktok.com/ZSHbN7jEy/",
 	permissions: "all",
 	hidden: false,

@@ -1,5 +1,5 @@
 import axios from "axios";
-import * as cheerio from "cheerio";
+import cheerio from "cheerio";
 import { URL } from "url";
 
 class MediaFireDownloader {
@@ -121,7 +121,7 @@ class MediaFireDownloader {
 export default {
 	name: "Mediafire",
 	description: "Mendownload file dari link MediaFire.",
-	command: ["mediafire", "mf"],
+	command: ["mf", "mediafire"],
 	usage: "$prefix$command <url-mediafire>",
 	permissions: "all",
 	hidden: false,
@@ -172,4 +172,3 @@ export default {
 		}
 	},
 };
-

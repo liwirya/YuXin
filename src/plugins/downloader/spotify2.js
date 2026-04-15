@@ -3,7 +3,7 @@ import spotmate from "#lib/scrapers/spotify";
 export default {
 	name: "spotify",
 	description: "Downloader Spotify Track.",
-	command: ["spdl2", "spotify2", "sp"],
+	command: ["spo2", "spotify2"],
 	usage: "$prefix$command https://open.spotify.com/track/4eHbdreAnSOrDDsFfc4Fpm",
 	permissions: "all",
 	hidden: false,

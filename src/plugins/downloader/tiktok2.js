@@ -3,7 +3,7 @@ import { Tiktok } from "#lib/scrapers/tiktok";
 export default {
 	name: "Tiktok",
 	description: "Download video dan audio TikTok tanpa watermark.",
-	command: ["tiktok2", "tt2", "ttdl2"],
+	command: ["tt2", "ssstik"],
 	usage: "$prefix$command url tiktok",
 	permissions: "all",
 	hidden: false,
@@ -47,7 +47,7 @@ export default {
 					caption: text
 				});
 			} else {
-				await m.reply(`Video tidak ditemukan, mencoba ngirim audio...`);
+				await m.reply(`Video tidak ditemukan, mencoba ngirim audio saja...`);
 			}
 
 			if (result.audioUrl) {

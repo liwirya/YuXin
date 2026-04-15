@@ -3,7 +3,7 @@ import { SnackVideo } from "#lib/scrapers/snackvideo";
 export default {
 	name: "Snack Video",
 	description: "Mendownload video dari SnackVideo tanpa watermark.",
-	command: ["snackvideo", "snack"],
+	command: ["snack", "snackvideo"],
 	usage: "$prefix$command url-snackvideo",
 	permissions: "all",
 	hidden: false,
