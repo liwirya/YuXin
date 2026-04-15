@@ -1,138 +1,360 @@
-# 📚 Dokumentasi Proyek: YuXin WhatsApp Bot
+# YuXin WhatsApp Bot
 
-**YuXin** adalah bot WhatsApp cerdas berbasis Node.js yang dibangun menggunakan library **Baileys**. Bot ini dirancang dengan arsitektur modular (sistem plugin) sehingga sangat mudah untuk dikembangkan, dipelihara, dan diskalakan. Bot ini mendukung integrasi database ganda (MongoDB/MySQL & Lokal) serta dilengkapi dengan berbagai fitur seperti AI, Downloader, Manajemen Grup, hingga integrasi PPOB (Digiflazz).
+<div align="center">
+  <img src="https://img.shields.io/badge/Node.js-18+-green?logo=node.js" alt="Node.js Version">
+  <img src="https://img.shields.io/badge/Baileys-Latest-blue?logo=whatsapp" alt="Baileys">
+  <img src="https://img.shields.io/badge/MongoDB-Supported-green?logo=mongodb" alt="MongoDB">
+  <img src="https://img.shields.io/badge/MySQL-Supported-blue?logo=mysql" alt="MySQL">
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
+</div>
 
----
+<p align="center">
+  <strong>Bot WhatsApp cerdas berbasis Node.js dengan arsitektur modular dan sistem plugin yang fleksibel.</strong>
+</p>
 
-## 🏗️ 1. Arsitektur & Struktur Direktori
+## 📋 Daftar Isi
 
-Proyek ini menggunakan struktur folder yang memisahkan antara konfigurasi, logika inti, utilitas, dan fitur (plugin). Hal ini membuat kode menjadi sangat rapi.
+- [Fitur Utama](#-fitur-utama)
+- [Teknologi yang Digunakan](#-teknologi-yang-digunakan)
+- [Prasyarat Instalasi](#-prasyarat-instalasi)
+- [Susunan Project](#-susunan-project)
+- [Instalasi & Konfigurasi](#-instalasi--konfigurasi)
+- [Contoh Penggunaan](#-contoh-penggunaan)
+- [Kontribusi](#-kontribusi)
+- [Lisensi](#-lisensi)
 
-```text
+## ✨ Fitur Utama
+
+### 🤖 Artificial Intelligence
+- **ChatGPT Integration** - Chatbot AI untuk menjawab pertanyaan umum secara cerdas
+
+### 🎬 Anime
+- **Anichin Scraper** - Mencari judul anime, episode terbaru, dan link streaming
+
+### 🔄 Converter & Media
+- **Sticker Creator** - Mengubah gambar/video menjadi stiker WhatsApp
+- **Media Converter** - Konversi format (audio, image, video)
+- **Brat Generator** - Membuat stiker/gambar bergaya tren "Brat"
+- **Image Effects** - Memberikan filter/efek pada gambar
+
+### 💳 Digital / PPOB (Digiflazz)
+- **Cek Harga** - Daftar harga produk digital (pulsa, kuota, game)
+- **Cek Saldo** - Monitoring saldo Digiflazz
+
+### 📥 Downloader
+- **Multi-Platform Support** - TikTok, Instagram, Facebook, Twitter/X, Spotify, Pinterest, Threads, Mediafire
+- **YouTube Integration** - Menggunakan yt-dlp untuk download media
+
+### 👥 Group Management
+- **Member Control** - Add/kick member
+- **Admin Management** - Promote/demote admin
+- **Tag All** - Mention semua anggota grup
+- **Group Settings** - Ubah foto profil grup, aturan grup
+
+### 👑 Owner/Developer Tools
+- **Eval & Exec** - Jalankan kode JavaScript atau perintah shell langsung dari WhatsApp
+- **User Management** - Ban/unban pengguna
+- **Bot Settings** - Ubah pengaturan bot secara dinamis
+- **Session Management** - Kelola riwayat chat dan sesi
+
+### 🛠️ Tools & Miscellaneous
+- **Lyrics Finder** - Mencari lirik lagu
+- **Music Recognition** - Identifikasi lagu dari audio (Shazam-like)
+- **Screenshot** - Capture screenshot website
+- **View Once Recovery** - Baca pesan "View Once"
+
+## 🛠️ Teknologi yang Digunakan
+
+| Kategori | Teknologi |
+|----------|-----------|
+| **Runtime** | Node.js 18+ |
+| **WhatsApp Library** | [@whiskeysockets/baileys](https://github.com/WhiskeySockets/Baileys) |
+| **Database** | MongoDB (Mongoose), MySQL, Local JSON |
+| **Process Manager** | PM2 |
+| **Downloader** | yt-dlp, Axios |
+| **Image Processing** | Sharp, Canvas |
+| **Environment Config** | dotenv |
+
+## 📋 Prasyarat Instalasi
+
+Sebelum menginstal, pastikan sistem Anda memenuhi persyaratan berikut:
+
+- **Node.js** versi 18 atau lebih tinggi
+- **npm** atau **yarn** (package manager)
+- **Git** (untuk clone repository)
+- **MongoDB** (opsional, bisa menggunakan Local JSON)
+- **MySQL** (opsional, alternatif database)
+- **FFmpeg** (untuk processing media - converter & downloader)
+- **PM2** (opsional, untuk deployment 24/7)
+
+### Instalasi Dependencies Sistem
+
+```bash
+# Ubuntu/Debian
+sudo apt update
+sudo apt install -y nodejs npm git ffmpeg
+
+# Windows (menggunakan chocolatey)
+choco install nodejs git ffmpeg
+
+# macOS (menggunakan homebrew)
+brew install node git ffmpeg
+```
+
+## 📁 Susunan Project
+
+```
 yuxin-whatsapp-bot/
-├── .env.example          # Contoh file konfigurasi environment
-├── ecosystem.config.cjs  # Konfigurasi untuk PM2 (Deployment)
-├── package.json          # Informasi dependensi project
-└── src/                  # Direktori utama source code
-    ├── config/           # Konfigurasi statis bot (Nama, Owner, Setting Stiker)
-    ├── core/             # Logika inti (Koneksi WA & Pemrosesan Pesan)
-    ├── database/         # Penyimpanan database lokal statis (JSON)
-    ├── lib/              # Pustaka internal (Database, Scraper, Skema, Uploader)
-    ├── plugins/          # Kumpulan fitur/perintah bot yang dibagi per kategori
-    ├── utils/            # Fungsi utilitas (API request, Converter, Digiflazz)
-    └── main.js           # Entry point (Titik awal jalannya aplikasi)
+├── .env.example              # Contoh file konfigurasi environment
+├── .gitignore               # File yang diabaikan oleh Git
+├── ecosystem.config.cjs     # Konfigurasi PM2 untuk deployment
+├── package.json             # Informasi dependensi dan script
+├── README.md                # Dokumentasi project
+└── src/                     # Direktori utama source code
+    ├── config/              # Konfigurasi statis bot
+    │   └── index.js         # Pengaturan nama, owner, prefix, dll
+    ├── core/                # Logika inti aplikasi
+    │   ├── connect.js       # Koneksi WhatsApp menggunakan Baileys
+    │   └── message.js       # Handler pemrosesan pesan masuk
+    ├── database/            # Penyimpanan database lokal (JSON)
+    ├── lib/                 # Pustaka internal
+    │   ├── database/        # Database drivers & models
+    │   │   ├── drivers/     # MongoDB & Local drivers
+    │   │   └── models/      # Skema (User, Group, Settings, Session)
+    │   ├── scrapers/        # Web scraper untuk anime & downloader
+    │   ├── schema/          # Validasi skema data
+    │   └── uploader/        # Modul upload media
+    ├── plugins/             # Kumpulan fitur/perintah bot
+    │   ├── ai/              # Fitur Artificial Intelligence
+    │   ├── anime/           # Fitur Anime (Anichin scraper)
+    │   ├── convert/         # Converter media
+    │   ├── digi/            # Integrasi PPOB Digiflazz
+    │   ├── downloader/      # Downloader multi-platform
+    │   ├── group/           # Manajemen grup WhatsApp
+    │   ├── misc/            # Fitur miscellaneous
+    │   ├── owner/           # Perintah khusus owner
+    │   └── tools/           # Alat bantu tambahan
+    ├── utils/               # Fungsi utilitas
+    │   ├── api/             # API request handlers
+    │   ├── converter/       # Media conversion utilities
+    │   └── digiflazz.js     # Integrasi Digiflazz API
+    └── main.js              # Entry point aplikasi
+```
+
+## 🚀 Instalasi & Konfigurasi
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/liwirya/yuxin-whatsapp-bot.git
+cd yuxin-whatsapp-bot
+```
+
+### 2. Instal Dependensi
+
+```bash
+npm install
+# atau
+yarn install
+```
+
+### 3. Konfigurasi Environment
+
+```bash
+# Copy file contoh environment
+cp .env.example .env
+
+# Edit file .env dengan editor favorit Anda
+nano .env
+```
+
+**Variabel Environment yang Perlu Diisi:**
+
+```env
+# Database
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database_name
+# atau untuk MySQL
+MYSQL_HOST=localhost
+MYSQL_USER=root
+MYSQL_PASSWORD=password
+MYSQL_DATABASE=yuxin_bot
+
+# API Keys
+DIGIFLAZZ_USERNAME=your_digiflazz_username
+DIGIFLAZZ_API_KEY=your_digiflazz_api_key
+OPENAI_API_KEY=your_openai_api_key
+
+# Bot Configuration
+BOT_NAME=YuXin
+OWNER_NUMBER=628xxxxxxxxxx
+PREFIX=!
+```
+
+### 4. Konfigurasi Bot
+
+Edit file `src/config/index.js` untuk mengatur:
+
+```javascript
+module.exports = {
+    botName: 'YuXin',
+    ownerNumber: ['628xxxxxxxxxx@s.whatsapp.net'],
+    prefix: ['!', '.', '/'],
+    // ... pengaturan lainnya
+}
+```
+
+### 5. Jalankan Bot
+
+**Mode Development:**
+```bash
+npm start
+# atau
+node src/main.js
+```
+
+**Mode Production (dengan PM2):**
+```bash
+npm install -g pm2
+pm2 start ecosystem.config.cjs
+pm2 save
+pm2 startup
+```
+
+## 💬 Contoh Penggunaan
+
+### Perintah Dasar
+
+| Perintah | Deskripsi | Contoh |
+|----------|-----------|--------|
+| `!menu` | Menampilkan daftar menu | `!menu` |
+| `!help` | Bantuan penggunaan | `!help` |
+
+### AI & Chat
+
+| Perintah | Deskripsi | Contoh |
+|----------|-----------|--------|
+| `!gpt <pertanyaan>` | Chat dengan AI | `!gpt apa itu Node.js?` |
+
+### Converter
+
+| Perintah | Deskripsi | Contoh |
+|----------|-----------|--------|
+| `!sticker` | Buat stiker dari gambar/video | Kirim gambar dengan caption `!sticker` |
+| `!brat <teks>` | Buat stiker brat | `!brat Hello World` |
+| `!toaudio` | Konversi video ke audio | Reply video dengan `!toaudio` |
+
+### Downloader
+
+| Perintah | Deskripsi | Contoh |
+|----------|-----------|--------|
+| `!tiktok <url>` | Download video TikTok | `!tiktok https://vt.tiktok.com/xxxxx` |
+| `!ig <url>` | Download post Instagram | `!ig https://instagram.com/p/xxxxx` |
+| `!ytmp4 <url>` | Download video YouTube | `!ytmp4 https://youtube.com/watch?v=xxxxx` |
+| `!spotify <url>` | Download lagu Spotify | `!spotify https://open.spotify.com/track/xxxxx` |
+
+### Group Management (Hanya Admin)
+
+| Perintah | Deskripsi | Contoh |
+|----------|-----------|--------|
+| `!add <nomor>` | Tambah member | `!add 628xxxxxxxxxx` |
+| `!kick @tag` | Keluarkan member | `!kick @user` |
+| `!promote @tag` | Jadikan admin | `!promote @user` |
+| `!demote @tag` | Turunkan admin | `!demote @user` |
+| `!tagall` | Tag semua member | `!tagall` |
+| `!setppgc` | Ubah foto grup | Kirim gambar dengan `!setppgc` |
+
+### PPOB (Digiflazz)
+
+| Perintah | Deskripsi | Contoh |
+|----------|-----------|--------|
+| `!harga` | Cek harga produk | `!harga pulsa` |
+| `!saldo` | Cek saldo Digiflazz | `!saldo` |
+
+### Owner Only
+
+| Perintah | Deskripsi | Contoh |
+|----------|-----------|--------|
+| `!eval <kode>` | Jalankan kode JS | `!eval console.log('test')` |
+| `!exec <perintah>` | Jalankan shell command | `!exec ls -la` |
+| `!ban @tag` | Ban pengguna | `!ban @user` |
+| `!settings` | Ubah pengaturan bot | `!settings public` |
+
+## 🤝 Kontribusi
+
+Kami sangat terbuka untuk kontribusi dari komunitas! Berikut cara berkontribusi:
+
+### Langkah Kontribusi
+
+1. **Fork** repository ini
+2. **Clone** repository hasil fork ke lokal Anda:
+   ```bash
+   git clone https://github.com/username-anda/yuxin-whatsapp-bot.git
+   ```
+3. **Buat branch** fitur baru:
+   ```bash
+   git checkout -b fitur-baru-anda
+   ```
+4. **Lakukan perubahan** dan commit:
+   ```bash
+   git add .
+   git commit -m "feat: tambahkan fitur baru"
+   ```
+5. **Push** ke repository fork:
+   ```bash
+   git push origin fitur-baru-anda
+   ```
+6. **Buat Pull Request** ke repository utama
+
+### Panduan Kontribusi
+
+- Pastikan kode Anda mengikuti gaya kode yang sudah ada
+- Tambahkan komentar untuk kode yang kompleks
+- Update README.md jika menambahkan fitur baru
+- Pastikan tidak ada error sebelum commit
+- Ikuti [Conventional Commits](https://www.conventionalcommits.org/) untuk pesan commit
+
+### Area yang Membutuhkan Kontribusi
+
+- [ ] Dokumentasi lebih lengkap
+- [ ] Unit testing
+- [ ] Fitur downloader tambahan
+- [ ] Optimasi database
+- [ ] Terjemahan multi-bahasa
+- [ ] Dashboard web untuk monitoring
+
+## 📜 Lisensi
+
+```
+MIT License
+
+Copyright (c) 2024 liwirya
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 ---
 
-## ⚙️ 2. Alur Logika (Core Logic)
-
-Bagaimana bot menerima dan merespons pesan? Berikut adalah alur kerja utamanya:
-
-1. **Inisialisasi (`src/main.js`)**: 
-   Saat aplikasi dijalankan, `main.js` akan memuat konfigurasi, menghubungkan database, dan memanggil fungsi koneksi dari `core/connect.js`.
-2. **Koneksi WhatsApp (`src/core/connect.js`)**:
-   - Modul ini menggunakan *Baileys* untuk menghubungkan bot ke server WhatsApp.
-   - Mengelola *state* autentikasi (menyimpan sesi login agar tidak perlu scan QR/Pairing terus-menerus).
-   - Mendengarkan event (kejadian) dari WhatsApp, seperti pesan masuk (`messages.upsert`).
-3. **Pemrosesan Pesan (`src/core/message.js`)**:
-   - Setiap pesan baru akan dilempar ke `message.js`.
-   - Modul ini bertugas mengekstrak teks pesan, mengecek apakah pesan tersebut memiliki **Prefix** (awalan perintah seperti `!`, `.`, atau `/`).
-   - Melakukan validasi dasar: *Apakah pengirim adalah owner? Apakah pengirim sedang di-ban? Apakah pesan dikirim di dalam grup?*
-   - Jika valid, sistem akan mencari *plugin* yang cocok dengan perintah tersebut dan mengeksekusinya.
-
----
-
-## 🧩 3. Modul dan Fitur (Plugins)
-
-Fitur-fitur bot diletakkan di dalam folder `src/plugins/` dan dikelompokkan berdasarkan fungsinya agar terorganisir dengan baik.
-
-### 🤖 A. Artificial Intelligence (`/ai`)
-Menggunakan API pihak ketiga untuk memberikan respons cerdas.
-* **gpt.js**: Chatbot berbasis AI untuk menjawab pertanyaan umum.
-
-### 🎬 B. Anime (`/anime`)
-Fitur untuk para pecinta anime (terintegrasi dengan scraper Anichin).
-* **anichinc.js / anichinep.js / anichingo.js / anichins.js**: Modul untuk mencari judul anime, mengecek episode terbaru, dan mendapatkan link terkait.
-
-### 🔄 C. Converter (`/convert`)
-Modul untuk memanipulasi file media.
-* **sticker.js**: Mengubah gambar/video singkat menjadi stiker WhatsApp.
-* **toaudio.js / toimage.js / tovideo.js**: Mengonversi format media satu sama lain (misal: stiker bergerak menjadi video).
-* **brat.js**: Membuat stiker/gambar bergaya tren "Brat".
-* **effects.js**: Memberikan filter/efek pada gambar.
-
-### 💳 D. Digital / PPOB (`/digi`)
-Integrasi dengan layanan PPOB **Digiflazz** untuk transaksi digital.
-* **harga.js**: Mengecek daftar harga produk digital (pulsa, kuota, game).
-* **saldo.js**: Mengecek sisa saldo Digiflazz bot.
-
-### 📥 E. Downloader (`/downloader`)
-Mengunduh media dari berbagai platform sosial media.
-* Mendukung platform populer: **TikTok, Instagram, Facebook, Twitter (X), Spotify, Pinterest, Threads, dan Mediafire**.
-* Logika downloader memanfaatkan scraper di `src/lib/scrapers/` atau menggunakan pustaka `yt-dlp`.
-
-### 👥 F. Group Management (`/group`)
-Otomatisasi dan pengelolaan grup WhatsApp (Hanya bisa digunakan jika bot adalah Admin).
-* **add.js / kick.js**: Menambah atau mengeluarkan member.
-* **promote.js / demote.js**: Menaikkan/menurunkan jabatan admin.
-* **everyone.js**: Tagging (menyebut) seluruh anggota grup (Tag All).
-* **setppgc.js**: Mengubah foto profil grup.
-
-### 👑 G. Owner / Developer (`/owner`)
-Perintah khusus yang *hanya* bisa diakses oleh Wira (Developer/Owner).
-* **eval.js / exec.js**: Menjalankan kode JavaScript atau perintah Terminal/Shell langsung dari WhatsApp (Sangat berguna untuk *debugging*).
-* **ban.js**: Memblokir pengguna agar tidak bisa menggunakan bot.
-* **clearchat.js**: Membersihkan riwayat obrolan bot.
-* **setpp.js**: Mengganti foto profil bot.
-* **settings.js**: Mengubah pengaturan bot secara dinamis.
-
-### 🛠️ H. Tools & Misc (`/tools` & `/misc`)
-Kumpulan alat bantu tambahan.
-* **lyrics.js**: Mencari lirik lagu.
-* **whatmusic.js**: Mengidentifikasi lagu dari audio (seperti Shazam).
-* **screenshot.js**: Mengambil screenshot dari sebuah website.
-* **delmsg.js / rvo.js**: Menghapus pesan atau membaca pesan "View Once" (Sekali Lihat).
-
----
-
-## 🗄️ 4. Skema Database & Penyimpanan
-
-Proyek ini menggunakan fleksibilitas database melalui folder `src/lib/database/`.
-
-1.  **Driver Database**:
-    * Terdapat dukungan untuk **MongoDB** (melalui Mongoose) dan **Local JSON** sebagai cadangan/alternatif jika database awan tidak tersedia.
-2.  **Model Skema (`src/lib/database/models/`)**:
-    * **User**: Menyimpan data pengguna (XP, limit harian, status premium, status ban).
-    * **Group**: Menyimpan pengaturan spesifik per grup (apakah mode *nsfw* aktif, apakah fitur *antilink* nyala).
-    * **Settings**: Menyimpan konfigurasi global bot (status publik/self).
-    * **Session**: Mengamankan data sesi koneksi Baileys ke dalam database agar tidak hilang saat server di-*restart*.
-
----
-
-## 🚀 5. Panduan Konfigurasi & Menjalankan Bot
-
-Untuk mengatur proyek ini, pengembang atau kontributor dapat mengikuti langkah berikut:
-
-### Konfigurasi Awal
-1. Salin file konfigurasi *environment*:
-   `cp .env.example .env`
-2. Buka `.env` dan isi variabel yang dibutuhkan:
-   * URL MongoDB/MySQL.
-   * API Key (seperti Digiflazz, API Scraper, dll).
-3. Buka `src/config/index.js` untuk mengatur:
-   * Nama Bot (YuXin).
-   * Nomor Pemilik (Owner Number).
-   * Prefix default.
-
-### Instalasi & Menjalankan
-1. Pastikan **Node.js** terinstal.
-2. Instal dependensi menggunakan npm atau yarn:
-   ```bash
-   npm install
-   ```
-3. Jalankan bot:
-   ```bash
-   npm start
-   ```
-   *(Atau gunakan PM2 dengan `ecosystem.config.cjs` untuk berjalan di latar belakang (background) selama 24/7).*
+<div align="center">
+  <p>Dibuat dengan ❤️ oleh <strong>liwirya</strong></p>
+  <p>
+    <a href="https://github.com/liwirya/yuxin-whatsapp-bot">GitHub</a> •
+    <a href="https://github.com/liwirya/yuxin-whatsapp-bot/issues">Issues</a> •
+    <a href="https://github.com/liwirya/yuxin-whatsapp-bot/discussions">Discussions</a>
+  </p>
+</div>
