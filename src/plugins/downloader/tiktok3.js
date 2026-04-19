@@ -30,11 +30,14 @@ export default {
 			return m.reply("Input URL TikTok.");
 		}
 
-		if (!input.includes('tiktok.com')) {
+		const urlRegex = /(https?:\/\/[^\s]+)/;
+		const match = input.match(urlRegex);
+		if (!match || !match[0].includes('tiktok.com')) {
 			return m.reply("URL tidak valid.");
 		}
+		const cleanUrl = match[0];
 
-		const result = await snaptik(input);
+		const result = await snaptik(cleanUrl);
 
 		if (!result || !result.status) {
 			return m.reply(`Failed: ${result?.message || "Gagal mengambil data."}`);
@@ -47,23 +50,48 @@ export default {
 		}
 
 		let caption = `*TikTok Downloader*\n\n`;
-		caption += `*Source:*\n${input}\n`;
+		caption += `*Source:*\n${cleanUrl}\n`;
 
 		const videoUrl = data.hd || data.sd;
 		const quality = data.hd ? "HD" : "SD";
 		let videoCaption = `*Quality:* ${quality}\n` + caption;
 		
-		await m.reply({
-			video: { url: videoUrl },
-			caption: videoCaption.trim(),
-		});
-
-		if (data.audio) {
-			await m.reply({
-				audio: { url: data.audio },
-				mimetype: 'audio/mp4',
-				ptt: false 
+		try {
+			const response = await fetch(videoUrl, {
+				headers: {
+					"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+					"Referer": "https://www.tiktok.com/"
+				}
 			});
+
+			if (!response.ok) {
+				return m.reply("Gagal mengunduh media dari server TikTok.");
+			}
+
+			const arrayBuffer = await response.arrayBuffer();
+			const videoBuffer = Buffer.from(arrayBuffer);
+
+			await m.reply({
+				video: videoBuffer,
+				caption: videoCaption.trim(),
+			});
+
+			if (data.audio) {
+				const audioRes = await fetch(data.audio, {
+					headers: { "User-Agent": "Mozilla/5.0" }
+				});
+				
+				if (audioRes.ok) {
+					const audioBuf = await audioRes.arrayBuffer();
+					await m.reply({
+						audio: Buffer.from(audioBuf),
+						mimetype: 'audio/mp4',
+						ptt: false 
+					});
+				}
+			}
+		} catch (err) {
+			m.reply(`Terjadi error saat memproses media: ${err.message}`);
 		}
 	},
 };
