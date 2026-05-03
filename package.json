@@ -15,12 +15,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liwirya/YuXin.git"
+    "url": "git+https://github.com/liwirya/yuxin-whatsapp-bot.git"
   },
   "author": "Huang Li Wen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/liwirya/YuXin/issues"
+    "url": "https://github.com/liwirya/yuxin-whatsapp-bot/issues"
   },
   "homepage": "https://github.com/liwirya/YuXin#readme",
   "description": "WhatsApp Bot using Baileys, MongoDB & MySQL.",
