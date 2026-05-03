@@ -20,8 +20,6 @@
 - [Susunan Project](#-susunan-project)
 - [Instalasi & Konfigurasi](#-instalasi--konfigurasi)
 - [Contoh Penggunaan](#-contoh-penggunaan)
-- [Kontribusi](#-kontribusi)
-- [Lisensi](#-lisensi)
 
 ## ✨ Fitur Utama
 
@@ -278,66 +276,6 @@ pm2 startup
 | `!exec <perintah>` | Jalankan shell command | `!exec ls -la` |
 | `!ban @tag` | Ban pengguna | `!ban @user` |
 | `!settings` | Ubah pengaturan bot | `!settings public` |
-
-## 🤝 Kontribusi
-
-Kami sangat terbuka untuk kontribusi dari komunitas! Berikut cara berkontribusi:
-
-### Langkah Kontribusi
-
-1. **Fork** repository ini
-2. **Clone** repository hasil fork ke lokal Anda:
-   ```bash
-   git clone https://github.com/username-anda/yuxin-whatsapp-bot.git
-   ```
-3. **Buat branch** fitur baru:
-   ```bash
-   git checkout -b fitur-baru-anda
-   ```
-4. **Lakukan perubahan** dan commit:
-   ```bash
-   git add .
-   git commit -m "feat: tambahkan fitur baru"
-   ```
-5. **Push** ke repository fork:
-   ```bash
-   git push origin fitur-baru-anda
-   ```
-6. **Buat Pull Request** ke repository utama
-
-### Panduan Kontribusi
-
-- Pastikan kode Anda mengikuti gaya kode yang sudah ada
-- Tambahkan komentar untuk kode yang kompleks
-- Update README.md jika menambahkan fitur baru
-- Pastikan tidak ada error sebelum commit
-- Ikuti [Conventional Commits](https://www.conventionalcommits.org/) untuk pesan commit
-
-## 📜 Lisensi
-
-```
-MIT License
-
-Copyright (c) 2024 liwirya
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
 
 ---
 
